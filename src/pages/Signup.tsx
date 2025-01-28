@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios, { AxiosError } from "axios";
+import authZodSchema from "../validators/auth.schema";
 import CodeBracketSquare from "../icons/CheckCircle";
+import { useNavigate } from "react-router-dom";
+import axios, { AxiosError } from "axios";
 import Check from "../icons/Check";
 import X from "../icons/X";
-import authZodSchema from "../validators/auth.schema";
 
 const Signup: React.FC = () => {
+    const navigate = useNavigate();
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const [passwordValidation, setPasswordValidation] = useState({
@@ -47,18 +49,9 @@ const Signup: React.FC = () => {
             );
             alert(response.data.message || "OTP sent successfully!");
         } catch (error: unknown) {
-            if (axios.isAxiosError(error)) {
-                if (axios.isAxiosError(error)) {
-                    alert(
-                        (error as AxiosError<{ message: string }>).response
-                            ?.data?.message || "Failed to send OTP."
-                    );
-                } else {
-                    alert("Failed to send OTP.");
-                }
-            } else {
-                alert("Failed to send OTP.");
-            }
+            if (error instanceof AxiosError)
+                alert(error.response?.data?.errMessage || "An error occurred.");
+            else alert("An unexpected error occurred. Please try again.");
         }
     };
 
@@ -126,7 +119,7 @@ const Signup: React.FC = () => {
             const otpCode = otp.join("");
 
             try {
-                const response = await axios.post(
+                const verifyResponse = await axios.post(
                     "http://localhost:3000/user/verify-otp",
                     {
                         email,
@@ -134,17 +127,27 @@ const Signup: React.FC = () => {
                         otp: otpCode,
                     }
                 );
-                alert(response.data.message || "OTP verified successfully!");
-                setOtpVerifyComp(false);
+
+                alert(verifyResponse.data.message || "Signup successful!");
+
+                const signupResponse = await axios.post(
+                    "http://localhost:3000/user/signup",
+                    {
+                        email,
+                        password,
+                    }
+                );
+
+                alert(signupResponse.data.message || "Signup successful!");
+
+                navigate("/login");
             } catch (error: unknown) {
-                if (axios.isAxiosError(error)) {
-                    alert(
-                        (error as AxiosError<{ message: string }>).response
-                            ?.data?.message || "OTP verification failed."
-                    );
-                } else {
-                    alert("OTP verification failed.");
-                }
+                if (error instanceof AxiosError) {
+                    const message =
+                        error.response?.data?.errMessage ||
+                        "An error occurred.";
+                    alert(message);
+                } else alert("An unexpected error occurred. Please try again.");
             }
         };
 
@@ -314,6 +317,17 @@ const Signup: React.FC = () => {
                         >
                             Verify
                         </button>
+                        <div className="mt-2 text-sm text-primary-200">
+                            If you already have an account,{" "}
+                            <span
+                                className="text-info hover:underline hover:text-info-hover hover:cursor-pointer "
+                                onClick={() => {
+                                    navigate("/login");
+                                }}
+                            >
+                                Login
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>

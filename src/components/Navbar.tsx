@@ -4,7 +4,7 @@ import UserIcon from "../icons/UserIcon";
 import Button from "./Button";
 const Navbar = () => {
     return (
-        <div className="relative flex h-14 max-h-14 bg-primary-500">
+        <div className="relative flex transition duration-500 h-14 max-h-14 bg-primary-500 hover:bg-primary-700">
             <div className="content-center text-xl font-bold ml-14">
                 <Link to={"/"}>UMLNinja</Link>
             </div>

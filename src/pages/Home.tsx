@@ -1,52 +1,41 @@
-import { useEffect, useState } from "react";
+import Features from "../components/Features";
+import DiagramSlider from "../components/DiagramSlider";
 import Navbar from "../components/Navbar";
+import { Link } from "react-router-dom";
+import Pricing from "../components/Pricing";
 
 const Home = () => {
-    const diagramNames = [
-        "Class",
-        "Use Case",
-        "Activity",
-        "Component",
-        "Start",
-        "Object",
-        "Sequence",
-        "Deployment",
-        "State",
-    ];
-
-    const [currDiagramVal, setCurrDiagramVal] = useState("Class");
-    const [animate, setAnimate] = useState(false);
-
-    useEffect(() => {
-        let index = 0;
-        const diagramClock = setInterval(() => {
-            setAnimate(false);
-            setTimeout(() => {
-                index = (index + 1) % diagramNames.length;
-                setCurrDiagramVal(diagramNames[index]);
-                setAnimate(true);
-            }, 100);
-        }, 2000);
-
-        return () => clearInterval(diagramClock);
-    }, []);
-
     return (
         <>
             <Navbar />
-            <div>
-                <div className="container">
-                    <div className="text-2xl font-bold text-center mt-14">
-                        Create professional UML diagrams in minutes for your
-                        project documentation
-                    </div>
-                    <div className="">
-                        <div className={` ${animate ? "slide-in" : ""}`}>
-                            {currDiagramVal}
-                        </div>
+            {/* Main Container */}
+            <div className="mt-7">
+                <div className="mb-1 text-2xl font-bold tracking-wider text-center font-heading">
+                    Create professional UML diagrams in minutes for your project
+                    documentation
+                </div>
+                <div className="flex justify-center">
+                    <div className="w-3/5 text-lg text-center">
+                        UMLNinja is an AI-powered tool that allows you to
+                        effortlessly create UML diagrams for your project
+                        documentation. Simply input a prompt, and our advanced
+                        AI will generate the corresponding PlantUML code, which
+                        you can use to visualize your ideas quickly and
+                        accurately
                     </div>
                 </div>
+                <div className="flex justify-center">
+                    <Link
+                        to={"/signup"}
+                        className="px-4 py-2 mt-4 text-lg transition duration-300 rounded-md bg-info hover:bg-info-hover"
+                    >
+                        Get Started
+                    </Link>
+                </div>
+                <DiagramSlider />
             </div>
+            <Features />
+            <Pricing />
         </>
     );
 };

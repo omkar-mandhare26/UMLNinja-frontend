@@ -1,13 +1,12 @@
 import Features from "../components/Features";
 import DiagramSlider from "../components/DiagramSlider";
-import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
 import Pricing from "../components/Pricing";
+import FAQ from "../components/FAQ";
 
 const Home = () => {
     return (
         <>
-            <Navbar />
             {/* Main Container */}
             <div className="mt-7">
                 <div className="mb-1 text-2xl font-bold tracking-wider text-center font-heading">
@@ -36,6 +35,7 @@ const Home = () => {
             </div>
             <Features />
             <Pricing />
+            <FAQ />
         </>
     );
 };

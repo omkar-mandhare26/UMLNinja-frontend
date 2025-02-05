@@ -23,7 +23,7 @@ const plans = [
     {
         name: "Pro",
         description: "Best for Budget",
-        price: "₹500",
+        price: "₹149/-",
         link: "/pro-plan",
         isMainPlan: true,
         features: [
@@ -40,11 +40,11 @@ const plans = [
     {
         name: "Professional",
         description: "Best for Professionals",
-        price: "₹1000",
+        price: "₹499/-",
         link: "/professional-plan",
         isMainPlan: false,
         features: [
-            { text: "250 Credits", included: true },
+            { text: "750 Credits", included: true },
             { text: "Unlimited Projects", included: true },
             { text: "PNG Export", included: true },
             { text: "Shareable Link", included: true },

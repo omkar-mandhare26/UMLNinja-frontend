@@ -3,7 +3,7 @@ import PageNotFound from "../pages/PageNotFound";
 import Signup from "../pages/Signup";
 import Login from "../pages/Login";
 import Home from "../pages/Home";
-import App from "../pages/Tests";
+import Tests from "../pages/Tests";
 import Terms from "../pages/Terms";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import Contact from "../pages/Contact";
@@ -11,6 +11,9 @@ import PageLayout from "../components/PageLayout";
 import About from "../pages/About";
 import FeaturesPage from "../pages/FeaturesPage";
 import PricingPage from "../pages/PricingPage";
+import ProtectedRoute from "../components/ProtectedRoute";
+import Dashboard from "../pages/Dashboard";
+import Dash from "../pages/dash";
 
 export const AppRoutes = () => (
     <Router>
@@ -28,9 +31,13 @@ export const AppRoutes = () => (
 
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/tests" element={<App />} />
+            <Route path="/tests" element={<Tests />} />
 
-            {/* 404 Page */}
+            <Route element={<ProtectedRoute />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/dash1" element={<Dash />} />
+            </Route>
+
             <Route path="*" element={<PageNotFound />} />
         </Routes>
     </Router>

@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import React, { useRef } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
+    const { loginUser } = useAuth();
 
     const loginHandler = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -13,19 +15,16 @@ const Login: React.FC = () => {
         const password = passwordRef.current?.value || "";
 
         try {
-            const response = await axios.post(
-                "http://localhost:3000/user/login",
-                {
-                    email,
-                    password,
-                }
-            );
-            alert(response.data.message);
-            navigate("/home");
+            await loginUser(email, password);
+            navigate("/dashboard");
         } catch (error) {
-            if (error instanceof AxiosError)
+            if (error instanceof AxiosError) {
                 alert(error.response?.data?.errMessage || "Error Occurred");
-            else alert("Unknown Error Occurred");
+            } else if (error instanceof Error) {
+                alert(error.message);
+            } else {
+                alert("Unknown Error Occurred");
+            }
         }
     };
 

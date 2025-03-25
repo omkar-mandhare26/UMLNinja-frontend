@@ -1,4 +1,9 @@
+import { useEffect } from "react";
+
 const PrivacyPolicy = () => {
+    useEffect(() => {
+        document.title = "Privacy Policy of UMLNinja";
+    }, []);
     return (
         <>
             <div className="max-w-4xl p-6 mx-auto text-primary-100">

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import authZodSchema from "../validators/auth.schema";
 import CodeBracketSquare from "../icons/CheckCircle";
+import axiosInstance from "../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import Check from "../icons/Check";
 import X from "../icons/X";
 
@@ -30,6 +31,10 @@ const Signup: React.FC = () => {
         "Deployment",
     ];
 
+    useEffect(() => {
+        document.title = "Get Started with UMLNinja";
+    }, []);
+
     const validatePassword = (pw: string) => {
         setPasswordValidation({
             length: pw.length >= 8,
@@ -43,10 +48,9 @@ const Signup: React.FC = () => {
     const sendOTP = async () => {
         const email = emailRef.current?.value || "";
         try {
-            const response = await axios.post(
-                "http://localhost:3000/user/send-otp",
-                { email }
-            );
+            const response = await axiosInstance.post("/user/send-otp", {
+                email,
+            });
             alert(response.data.message || "OTP sent successfully!");
         } catch (error: unknown) {
             if (error instanceof AxiosError)
@@ -60,7 +64,6 @@ const Signup: React.FC = () => {
         const password = passwordRef.current?.value || "";
 
         const validator = authZodSchema.safeParse({ email, password });
-
         if (!validator.success) {
             alert("Invalid Inputs");
             return;
@@ -119,25 +122,23 @@ const Signup: React.FC = () => {
             const otpCode = otp.join("");
 
             try {
-                const verifyResponse = await axios.post(
-                    "http://localhost:3000/user/verify-otp",
+                const verifyResponse = await axiosInstance.post(
+                    "/user/verify-otp",
                     {
                         email,
                         password,
                         otp: otpCode,
                     }
                 );
-
                 alert(verifyResponse.data.message || "Signup successful!");
 
-                const signupResponse = await axios.post(
-                    "http://localhost:3000/user/signup",
+                const signupResponse = await axiosInstance.post(
+                    "/user/signup",
                     {
                         email,
                         password,
                     }
                 );
-
                 alert(signupResponse.data.message || "Signup successful!");
 
                 navigate("/login");

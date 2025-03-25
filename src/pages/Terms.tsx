@@ -1,4 +1,9 @@
+import { useEffect } from "react";
+
 const Terms = () => {
+    useEffect(() => {
+        document.title = "Terms and Conditions of UMLNinja";
+    }, []);
     return (
         <>
             <div className="max-w-4xl p-6 mx-auto text-primary-100">

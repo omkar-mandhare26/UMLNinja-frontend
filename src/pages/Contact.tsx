@@ -1,6 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Contact = () => {
+    useEffect(() => {
+        document.title = "Contact UMLNinja";
+    }, []);
+
     const [formData, setFormData] = useState({
         name: "",
         email: "",

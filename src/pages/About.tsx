@@ -1,4 +1,10 @@
+import { useEffect } from "react";
+
 const About = () => {
+    useEffect(() => {
+        document.title = "About UML Ninja";
+    }, []);
+
     return (
         <div className="max-w-4xl p-6 mx-auto text-primary-100">
             <h1 className="mb-4 text-3xl font-bold text-center">

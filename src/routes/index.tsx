@@ -1,19 +1,22 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import PageNotFound from "../pages/PageNotFound";
-import Signup from "../pages/Signup";
-import Login from "../pages/Login";
-import Home from "../pages/Home";
-import Tests from "../pages/Tests";
-import Terms from "../pages/Terms";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
-import Contact from "../pages/Contact";
 import PageLayout from "../components/PageLayout";
-import About from "../pages/About";
+import PrivateRoute from "../pages/PrivateRoute";
+import PageNotFound from "../pages/PageNotFound";
 import FeaturesPage from "../pages/FeaturesPage";
 import PricingPage from "../pages/PricingPage";
-import ProtectedRoute from "../components/ProtectedRoute";
 import Dashboard from "../pages/Dashboard";
-import Dash from "../pages/dash";
+import Contact from "../pages/Contact";
+import Signup from "../pages/Signup";
+import Login from "../pages/Login";
+import DiagramGenerator from "../pages/Tests";
+import Terms from "../pages/Terms";
+import Home from "../pages/Home";
+import About from "../pages/About";
+import Dash from "../pages/Dash";
+import Query from "../pages/Query";
+import ViewProfile from "../pages/ViewProfile";
+import Share from "../pages/Share";
 
 export const AppRoutes = () => (
     <Router>
@@ -31,12 +34,27 @@ export const AppRoutes = () => (
 
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/tests" element={<Tests />} />
+            <Route path="/tests" element={<DiagramGenerator />} />
+            <Route path="/share" element={<Share />} />
 
-            <Route element={<ProtectedRoute />}>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/dash1" element={<Dash />} />
-            </Route>
+            {/* <Route element={<PrivatePageLayout />}> */}
+            <Route
+                path="/dashboard"
+                element={<PrivateRoute children={<Dashboard />} />}
+            />
+            <Route
+                path="/query"
+                element={<PrivateRoute children={<Query />} />}
+            />
+            <Route
+                path="/view-profile"
+                element={<PrivateRoute children={<ViewProfile />} />}
+            />
+            <Route
+                path="/dash1"
+                element={<PrivateRoute children={<Dash />} />}
+            />
+            {/* </Route> */}
 
             <Route path="*" element={<PageNotFound />} />
         </Routes>

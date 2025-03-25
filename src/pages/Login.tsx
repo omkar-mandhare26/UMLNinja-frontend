@@ -1,13 +1,23 @@
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
-import React, { useRef } from "react";
-import { useAuth } from "../hooks/useAuth";
+import React, { useEffect, useRef } from "react";
+import useAuth from "../hooks/useAuth";
 
 const Login: React.FC = () => {
     const navigate = useNavigate();
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
-    const { loginUser } = useAuth();
+    const { login, isAuthenticated } = useAuth();
+
+    useEffect(() => {
+        document.title = "Login to UMLNinja";
+    }, []);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate("/dashboard");
+        }
+    }, [isAuthenticated, navigate]);
 
     const loginHandler = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -15,8 +25,7 @@ const Login: React.FC = () => {
         const password = passwordRef.current?.value || "";
 
         try {
-            await loginUser(email, password);
-            navigate("/dashboard");
+            await login(email, password);
         } catch (error) {
             if (error instanceof AxiosError) {
                 alert(error.response?.data?.errMessage || "Error Occurred");
@@ -35,7 +44,10 @@ const Login: React.FC = () => {
                     <h1 className="text-2xl font-bold text-center text-primary-500">
                         Login to UMLNinja
                     </h1>
-                    <form className="space-y-4" onSubmit={loginHandler}>
+                    <form
+                        className="space-y-4 text-primary-900"
+                        onSubmit={loginHandler}
+                    >
                         <input
                             ref={emailRef}
                             type="email"

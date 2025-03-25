@@ -3,8 +3,13 @@ import DiagramSlider from "../components/DiagramSlider";
 import { Link } from "react-router-dom";
 import Pricing from "../components/Pricing";
 import FAQ from "../components/FAQ";
+import { useEffect } from "react";
 
 const Home = () => {
+    useEffect(() => {
+        document.title = "UMLNinja - Create UML Diagrams in Minutes";
+    }, []);
+
     return (
         <>
             {/* Main Container */}

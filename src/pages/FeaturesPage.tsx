@@ -5,6 +5,7 @@ import CPUChip from "../icons/CPUChip";
 import Globe from "../icons/Globe";
 import Users from "../icons/Users";
 import Card from "../components/Card";
+import { useEffect } from "react";
 
 const featuresList = [
     {
@@ -39,33 +40,38 @@ const featuresList = [
     },
 ];
 
-const FeaturesPage = () => (
-    <div className="max-w-6xl p-6 mx-auto text-primary-100">
-        <h1 className="mb-6 text-3xl font-bold text-center">
-            Features of UMLNinja
-        </h1>
-        <p className="mb-10 text-lg text-center text-primary-200">
-            UMLNinja offers powerful AI-driven diagram generation, export
-            options, collaboration tools, and seamless accessibility.
-        </p>
+const FeaturesPage = () => {
+    useEffect(() => {
+        document.title = "UMLNinja Features";
+    }, []);
+    return (
+        <div className="max-w-6xl p-6 mx-auto text-primary-100">
+            <h1 className="mb-6 text-3xl font-bold text-center">
+                Features of UMLNinja
+            </h1>
+            <p className="mb-10 text-lg text-center text-primary-200">
+                UMLNinja offers powerful AI-driven diagram generation, export
+                options, collaboration tools, and seamless accessibility.
+            </p>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-            {featuresList.map((feature, idx) => (
-                <div
-                    key={idx}
-                    className="flex justify-center transition-all duration-300 hover:scale-105"
-                >
-                    <Card
-                        variant="light"
-                        heading={feature.heading}
-                        text={feature.text}
-                        startIcon={feature.startIcon}
-                        className="hover:shadow-[0px_5px_15px_rgba(0,0,0,0.2)]"
-                    />
-                </div>
-            ))}
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+                {featuresList.map((feature, idx) => (
+                    <div
+                        key={idx}
+                        className="flex justify-center transition-all duration-300 hover:scale-105"
+                    >
+                        <Card
+                            variant="light"
+                            heading={feature.heading}
+                            text={feature.text}
+                            startIcon={feature.startIcon}
+                            className="hover:shadow-[0px_5px_15px_rgba(0,0,0,0.2)]"
+                        />
+                    </div>
+                ))}
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 export default FeaturesPage;

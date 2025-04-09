@@ -28,6 +28,10 @@ const Dashboard: React.FC = () => {
     const currentDiagrams = diagrams.slice(startIndex, endIndex);
 
     useEffect(() => {
+        document.title = "UMLNinja Dashboard";
+    }, []);
+
+    useEffect(() => {
         const fetchDiagrams = async () => {
             try {
                 setIsLoading(true);
@@ -53,12 +57,10 @@ const Dashboard: React.FC = () => {
             });
             if (res.data?.message) {
                 alert(res.data.message);
-                // Refresh diagrams after deletion
                 const response = await axiosInstance.post(
                     "/user/get-all-diagrams"
                 );
                 setDiagrams(response.data.diagrams);
-                // Adjust current page if necessary after deletion
                 if (currentDiagrams.length === 1 && currentPage > 1) {
                     setCurrentPage(currentPage - 1);
                 }
@@ -140,86 +142,110 @@ const Dashboard: React.FC = () => {
     }
 
     return (
-        <div className="flex flex-col min-h-screen">
-            <DashboardNavbar queryDiagram={false} />
-            <div className="flex-1 bg-primary-700">
-                <div className="w-11/12 m-auto pt-14">
-                    <div className="flex items-center justify-between mb-8">
-                        <Link to={"/query"}>
-                            <Button
-                                variant={"info"}
-                                size={"md"}
-                                text={"Create New Diagram"}
-                            />
-                        </Link>
-                        <div className="text-white">
-                            Showing {startIndex + 1} to{" "}
-                            {Math.min(endIndex, diagrams.length)} of{" "}
-                            {diagrams.length} diagrams
+        <div>
+            <div className="flex flex-col min-h-screen">
+                <DashboardNavbar queryDiagram={false} />
+                <div className="flex-1 bg-primary-700">
+                    <div className="w-11/12 m-auto pt-14">
+                        <div className="flex items-center justify-between mb-8">
+                            <Link to={"/query"}>
+                                <Button
+                                    variant={"info"}
+                                    size={"md"}
+                                    text={"Create New Diagram"}
+                                />
+                            </Link>
+                            <div className="text-white">
+                                Showing {startIndex + 1} to{" "}
+                                {Math.min(endIndex, diagrams.length)} of{" "}
+                                {diagrams.length} diagrams
+                            </div>
                         </div>
+
+                        <div className="overflow-hidden rounded-lg shadow-lg bg-primary-600">
+                            {diagrams.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center p-8 space-y-4">
+                                    <p className="text-xl text-primary-300">
+                                        No diagram Yet
+                                    </p>
+                                    <Link to={"/query"}>
+                                        <Button
+                                            variant={"info"}
+                                            size={"md"}
+                                            text={"Create New Diagram"}
+                                        />
+                                    </Link>
+                                </div>
+                            ) : (
+                                <table className="w-full text-xl text-left">
+                                    <thead className="bg-primary-500">
+                                        <tr className="h-14 font-heading">
+                                            <th className="w-3/5 pl-4">
+                                                Diagram Name
+                                            </th>
+                                            <th className="w-1/5">Type</th>
+                                            <th className="w-1/5">
+                                                Created At
+                                            </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {currentDiagrams.map((diagram, idx) => (
+                                            <tr
+                                                key={diagram._id}
+                                                className={`h-14 hover:bg-primary-400 border-t-2 border-primary-400 ${
+                                                    idx % 2
+                                                        ? "bg-primary-500"
+                                                        : "bg-secondary"
+                                                }`}
+                                            >
+                                                <td className="pl-4 truncate max-w-[500px]">
+                                                    <Link
+                                                        to={`/diagram/${diagram.diagramName}`}
+                                                        className="hover:text-info"
+                                                    >
+                                                        {diagram.diagramName}
+                                                    </Link>
+                                                </td>
+                                                <td>
+                                                    <Link
+                                                        to={`/diagram/${diagram.diagramName}`}
+                                                    >
+                                                        {diagram.type}
+                                                    </Link>
+                                                </td>
+                                                <td>
+                                                    {formatDate(
+                                                        new Date(
+                                                            diagram.createdAt
+                                                        )
+                                                    )}
+                                                </td>
+                                                <td className="text-center">
+                                                    <button
+                                                        className="p-2"
+                                                        onClick={() =>
+                                                            deleteQuery(
+                                                                diagram.diagramName
+                                                            )
+                                                        }
+                                                    >
+                                                        <Trash />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            )}
+                        </div>
+
+                        {totalPages > 1 && renderPaginationControls()}
+
+                        {/* Add spacing before footer */}
+                        <div className="h-16"></div>
                     </div>
-
-                    <div className="overflow-hidden rounded-lg shadow-lg bg-primary-600">
-                        <table className="w-full text-xl text-left">
-                            <thead className="bg-primary-500">
-                                <tr className="h-14 font-heading">
-                                    <th className="w-2/5 pl-4">Diagram Name</th>
-                                    <th className="w-1/5">Type</th>
-                                    <th className="w-1/5">Created At</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {currentDiagrams.map((diagram, idx) => (
-                                    <tr
-                                        key={diagram._id}
-                                        className={`h-14 hover:bg-primary-400 border-t-2 border-primary-400 ${
-                                            idx % 2
-                                                ? "bg-primary-500"
-                                                : "bg-secondary"
-                                        }`}
-                                    >
-                                        <td className="pl-4">
-                                            <Link
-                                                to={`/share?diagramId=${diagram.diagramName}`}
-                                            >
-                                                {diagram.diagramName}
-                                            </Link>
-                                        </td>
-                                        <td>
-                                            <Link
-                                                to={`/share?diagramId=${diagram.diagramName}`}
-                                            >
-                                                {diagram.type}
-                                            </Link>
-                                        </td>
-                                        <td>
-                                            {formatDate(
-                                                new Date(diagram.createdAt)
-                                            )}
-                                        </td>
-                                        <td className="text-center">
-                                            <button
-                                                className="p-2"
-                                                onClick={() =>
-                                                    deleteQuery(
-                                                        diagram.diagramName
-                                                    )
-                                                }
-                                            >
-                                                <Trash />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {totalPages > 1 && renderPaginationControls()}
-
-                    {/* Add spacing before footer */}
-                    <div className="h-16"></div>
                 </div>
             </div>
             <Footer />

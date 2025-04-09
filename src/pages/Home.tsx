@@ -12,7 +12,6 @@ const Home = () => {
 
     return (
         <>
-            {/* Main Container */}
             <div className="mt-7">
                 <div className="mb-1 text-2xl font-bold tracking-wider text-center font-heading">
                     Create professional UML diagrams in minutes for your project

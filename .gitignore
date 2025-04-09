@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 
 OldAuth/*
+/public/paymentQR.jpeg

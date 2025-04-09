@@ -52,10 +52,8 @@ const Terms = () => {
                         4. Payment and Subscriptions
                     </h2>
                     <p>
-                        All payments are processed through Razorpay.
-                        Subscription services renew automatically unless
-                        canceled. No refunds are provided for payments made
-                        before cancellation.
+                        All payments are processed manually using UPI or bank
+                        transfer. No refunds are provided once payment is done.
                     </p>
                 </section>
 

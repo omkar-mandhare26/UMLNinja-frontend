@@ -21,7 +21,6 @@ const sections = [
     {
         title: "Legal",
         links: [
-            { label: "Support", href: "/support" },
             { label: "Terms of Service", href: "/terms" },
             { label: "Privacy Policy", href: "/privacy-policy" },
         ],

@@ -5,18 +5,19 @@ import PrivateRoute from "../pages/PrivateRoute";
 import PageNotFound from "../pages/PageNotFound";
 import FeaturesPage from "../pages/FeaturesPage";
 import PricingPage from "../pages/PricingPage";
+import ViewProfile from "../pages/ViewProfile";
+import DiagramGenerator from "../pages/Tests";
 import Dashboard from "../pages/Dashboard";
 import Contact from "../pages/Contact";
 import Signup from "../pages/Signup";
 import Login from "../pages/Login";
-import DiagramGenerator from "../pages/Tests";
 import Terms from "../pages/Terms";
-import Home from "../pages/Home";
 import About from "../pages/About";
-import Dash from "../pages/Dash";
 import Query from "../pages/Query";
-import ViewProfile from "../pages/ViewProfile";
 import Share from "../pages/Share";
+import Home from "../pages/Home";
+import Diagram from "../pages/Diagram";
+import BuyCredits from "../pages/BuyCredits";
 
 export const AppRoutes = () => (
     <Router>
@@ -51,8 +52,12 @@ export const AppRoutes = () => (
                 element={<PrivateRoute children={<ViewProfile />} />}
             />
             <Route
-                path="/dash1"
-                element={<PrivateRoute children={<Dash />} />}
+                path="/diagram/:diagramName"
+                element={<PrivateRoute children={<Diagram />} />}
+            />
+            <Route
+                path="/buy-credits"
+                element={<PrivateRoute children={<BuyCredits />} />}
             />
             {/* </Route> */}
 

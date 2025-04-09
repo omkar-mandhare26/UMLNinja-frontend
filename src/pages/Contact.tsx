@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axiosInstance from "../utils/axiosInstance";
 
 const Contact = () => {
     useEffect(() => {
@@ -11,6 +12,9 @@ const Contact = () => {
         subject: "",
         message: "",
     });
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState(false);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -18,15 +22,33 @@ const Contact = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Form Data Submitted:", formData);
-        alert("Your message has been sent!");
-        setFormData({ name: "", email: "", subject: "", message: "" });
+        setIsLoading(true);
+        setError(null);
+        setSuccess(false);
+
+        try {
+            const response = await axiosInstance.post("/user/contact-us", {
+                name: formData.name,
+                email: formData.email,
+                subject: formData.subject,
+                message: formData.message,
+            });
+
+            console.log("Contact form response:", response.data);
+            setSuccess(true);
+            setFormData({ name: "", email: "", subject: "", message: "" });
+        } catch (err) {
+            console.error("Error submitting contact form:", err);
+            setError("Failed to send message. Please try again later.");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
-        <div className="max-w-2xl p-6 mx-auto bg-white rounded-lg shadow-lg mt-14 text-primary-500 font-heading">
+        <div className="max-w-2xl p-6 mx-auto mb-10 bg-white rounded-lg shadow-lg mt-14 text-primary-500 font-heading">
             <h1 className="mb-4 text-3xl font-bold text-center">Contact Us</h1>
             <p className="mb-6 text-center text-gray-600">
                 Reach out to us for any queries or support.
@@ -60,7 +82,8 @@ const Contact = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full p-2 border border-gray-300 rounded"
+                        disabled={isLoading}
+                        className="w-full p-2 border border-gray-300 rounded disabled:opacity-50"
                     />
                 </div>
                 <div>
@@ -71,7 +94,8 @@ const Contact = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full p-2 border border-gray-300 rounded"
+                        disabled={isLoading}
+                        className="w-full p-2 border border-gray-300 rounded disabled:opacity-50"
                     />
                 </div>
                 <div>
@@ -82,7 +106,8 @@ const Contact = () => {
                         value={formData.subject}
                         onChange={handleChange}
                         required
-                        className="w-full p-2 border border-gray-300 rounded"
+                        disabled={isLoading}
+                        className="w-full p-2 border border-gray-300 rounded disabled:opacity-50"
                     />
                 </div>
                 <div>
@@ -93,14 +118,24 @@ const Contact = () => {
                         onChange={handleChange}
                         required
                         rows={4}
-                        className="w-full p-2 border border-gray-300 rounded"
+                        disabled={isLoading}
+                        className="w-full p-2 border border-gray-300 rounded disabled:opacity-50"
                     />
                 </div>
+
+                {success && (
+                    <p className="text-center text-green-600">
+                        Your message has been sent successfully!
+                    </p>
+                )}
+                {error && <p className="text-center text-red-600">{error}</p>}
+
                 <button
                     type="submit"
-                    className="w-full p-2 text-white rounded bg-info hover:bg-info-hover"
+                    disabled={isLoading}
+                    className="w-full p-2 text-white rounded bg-info hover:bg-info-hover disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    Send Message
+                    {isLoading ? "Sending..." : "Send Message"}
                 </button>
             </form>
         </div>

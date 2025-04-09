@@ -159,12 +159,24 @@ const Query = () => {
         }
 
         if (url) {
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = filename;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            axiosInstance
+                .get(url, { responseType: "blob" })
+                .then((response) => {
+                    const blob = new Blob([response.data], {
+                        type: response.headers["content-type"],
+                    });
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = filename;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(link.href);
+                })
+                .catch((error) => {
+                    console.error("Error downloading file:", error);
+                    alert("Failed to download file. Please try again.");
+                });
         }
     };
 

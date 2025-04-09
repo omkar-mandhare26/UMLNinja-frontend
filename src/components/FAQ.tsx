@@ -31,7 +31,7 @@ const faqItems = [
     },
     {
         question: "What payment methods do you accept?",
-        answer: "We accept payments via Razorpay, which supports major credit/debit cards, UPI, net banking, and various digital wallets for a seamless transaction experience.",
+        answer: "We offer UPI payments and also bank transfer",
     },
     {
         question: "Will my subscription renew automatically?",
@@ -89,7 +89,7 @@ function FAQComp({ items }: FAQProps) {
                     >
                         <span className="text-lg font-medium font-heading">
                             {item.question}
-                        </span> 
+                        </span>
                         <ChevronDown
                             className={`w-5 h-5 text-primary-300 transition-transform duration-300 ${
                                 openIndex === index ? "rotate-180" : ""

@@ -33,9 +33,7 @@ const About = () => {
                     <li>Support for multiple UML formats</li>
                     <li>AI-powered PlantUML code generation</li>
                     <li>Fast and secure rendering</li>
-                    <li>
-                        Credit-based payment system with Razorpay integration
-                    </li>
+                    <li>Credit-based payment system</li>
                 </ul>
             </section>
 

@@ -5,7 +5,7 @@ const plans = [
         name: "Free",
         description: "Best for Beginners",
         price: "₹0",
-        link: "/login",
+        link: "/buy-credits",
         isMainPlan: false,
         features: [
             { text: "5 Credits", included: true },
@@ -21,7 +21,7 @@ const plans = [
         name: "Pro",
         description: "Best for Budget",
         price: "₹149/-",
-        link: "/pro-plan",
+        link: "/buy-credits",
         isMainPlan: true,
         features: [
             { text: "100 Credits", included: true },
@@ -37,7 +37,7 @@ const plans = [
         name: "Professional",
         description: "Best for Professionals",
         price: "₹499/-",
-        link: "/professional-plan",
+        link: "/buy-credits",
         isMainPlan: false,
         features: [
             { text: "750 Credits", included: true },
